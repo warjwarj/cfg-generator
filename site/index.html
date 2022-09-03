@@ -1,0 +1,132 @@
+<!-- 
+
+https://getbootstrap.com/docs/ 
+
+TODO:
+    - function to get the val from the monitor layout option 
+    - grey out options that the user has already selected in select
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="main.css" />
+
+    <title>MDVR Config Generator</title>
+</head>
+<body>
+    <h1>MDVR Config Generator</h1>
+    <br>
+    <h5>
+        Fill in the relevant fields to write a custom configuration file for uploading to an MDVR system.
+        The form values are pre-filled as that of a default 4 channel config.
+    </h5>
+    <form id="main_form" href="">
+        <div class="form-section">
+            <br><h4>Channel OSD</h4><br>
+            <p>
+                The names of the channels. The names will appear in the top-left of the picture. 
+                If you would like a two way default screen layout then make sure to have the them in channel one and two.
+            </p>
+            <label for="/camera[0]/title          =" class="form-label"> Ch 1 --> </label>
+            <input name="cam_names" type="text" id="/camera[0]/title          =" value="Nearside" class="form-control"><br>
+            <label for="/camera[1]/title          =" class="form-label"> Ch 2 --> </label>
+            <input name="cam_names" type="text" id="/camera[1]/title          =" value="Farside" class="form-control"><br>
+            <label for="/camera[2]/title          =" class="form-label"> Ch 3 --> </label>
+            <input name="cam_names" type="text" id="/camera[2]/title          =" value="Front" class="form-control"><br>
+            <label for="/camera[3]/title          =" class="form-label"> Ch 4 --> </label>
+            <input name="cam_names" type="text" id="/camera[3]/title          =" value="Rear" class="form-control"><br>
+        </div>
+        <div class="form-section">
+            <br><h4>Alarms</h4><br>
+            <p>
+                The names of the alarms. When the alarm is triggered then the channel selected next to it 
+                will appear on the screen with the name of the alarm next to it.
+            </p>
+            <label for="/almEv[0]/osd             =" class="form-label"> Alm 1 --> </label>
+            <input name="alm_names" type="text" id="/almEv[0]/osd             =" value="Left Ind" class="form-control"><span class="annotation">Shows</span>
+            <select name="alm_bmch" id="/almEv[0]/switchBmCh      =" class="form-select">
+                <option value="0x1" name="bmch1"selected>Nearside</option>
+                <option value="0x2" name="bmch2">Farside</option>
+                <option value="0x4" name="bmch3">Front</option>
+                <option value="0x8" name="bmch4">Rear</option>
+            </select><span class="annotation">When triggered</span><br>
+            <label for="/almEv[1]/osd             =" class="form-label"> Alm 2 --> </label>
+            <input name="alm_names" type="text" id="/almEv[1]/osd             =" value="Right Ind" class="form-control"><span class="annotation">Shows</span>
+            <select name="alm_bmch" id="/almEv[1]/switchBmCh      =" class="form-select">
+                <option value="0x1" name="bmch1">Nearside</option>
+                <option value="0x2" name="bmch2" selected>Farside</option>
+                <option value="0x4" name="bmch3">Front</option>
+                <option value="0x8" name="bmch4">Rear</option>
+            </select><span class="annotation">When triggered</span><br>
+            <label for="/almEv[2]/osd             =" class="form-label"> Alm 3 --> </label>
+            <input name="alm_names" type="text" id="/almEv[2]/osd             =" value="Reverse" class="form-control"><span class="annotation">Shows</span>
+            <select name="alm_bmch" id="/almEv[2]/switchBmCh      =" class="form-select">
+                <option value="0x1" name="bmch1">Nearside</option>
+                <option value="0x2" name="bmch2">Farside</option>
+                <option value="0x4" name="bmch3">Front</option>
+                <option value="0x8" name="bmch4" selected>Rear</option>
+            </select><span class="annotation">When triggered</span><br><br>
+        </div>
+        <div class="form-section">
+            <h4>Monitor layout</h4><br>
+            <p>
+                There are three ways that cameras on the monitor can be displayed. you can have all four cameras on the screen at once, 
+                you can have the first two, or you can have just one channel.
+            </p><br>
+            <input type="radio" class="form-check-input" id="four_ch" name="v_out" value="4" checked>
+            <label> All Four Channels</label><br><br>
+
+            <input type="radio" class="form-check-input" id="two_ch" name="v_out" value="2">
+            <label> First Two Channels</label><br><br>
+
+            <input type="radio" class="form-check-input" id="one_ch" name="v_out" value="">
+            <label> Just One Channel</label><br><br>
+            <!-- CHECK THAT THE MONITOR COMMANDS WORK -->
+            <div id="single_screen" hidden>
+                <p>
+                    select the channel that you would like displayed on the monitor
+                </p>
+                <select name="fullscreen" id="/vout/ch_full             =" class="form-select">
+                    <option value="1">Nearside</option>
+                    <option value="2">Farside</option>
+                    <option value="3">Front</option>
+                    <option value="4">Rear</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-section">
+            <br><h4>Shutdown Delay</h4><br>
+            <p>
+                The time, in minutes, the DVR will stay on for after the ignition is turned off.
+            </p>
+            <br>
+            <label id="shutdown" class="switch">
+                <input id="shutdown_toggle" type="checkbox" checked>
+                <span class="slider round"></span>
+            </label>
+            <br><br><input type="number" class="form-control" name="shutdown_number" id="/power/accDelay           =" min="0" max="60" value="30">
+        </div>
+        <div class="form-section">
+            <br><h4>Screensaver</h4><br>
+            <p>
+                the time, in seconds, that the DVR in cab monitor will go black after.
+            </p><br>
+            <label id="screensaver" class="switch">
+                <input id="saver_toggle" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+            <br><br><input type="number" class="form-control" name="saver_number" id="/mpp/screenSaverDelay     =" min="0" max="60" value="0" disabled>
+        </div>
+    </form>
+    <br><a download="config.txt" id="downloadlink" href="" class="btn btn-primary">Submit</a>
+</body>
+<script defer src="scripts\dynamic.js"></script>
+<script defer src="scripts\main.js"></script>
+</html>
