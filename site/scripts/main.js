@@ -676,7 +676,7 @@ let template = {
   "/disk[1]/cfgPartNum       =": " 0",
   "/disk[2]/cfgPartNum       =": " 0",
   "/vout/ch_full             =": " 0",
-  "/vout/ch_mode             =": " 4",
+  "/vout/ch_mode             =": "",
   "/vout/bmCh   A             =": " 0x0",
   "/mpp/audioType            =": " 0x0",
   "/mpp/cvbs_out             =": " 0",
@@ -804,19 +804,34 @@ function getValFromNumField(elementName, dict, toggleId, isShutdown=false){
 }
 
 function getValFromVout(dict){
-  const radios = document.getElementsByName("v_out")
+  let radios = document.getElementsByName("v_out")
   radios.forEach(element => {
-    if (element.id === "one_ch"){
-      const select = document.getElementById("/vout/ch_full             =")
-      const selected = select.options[select.selectedIndex]
-      dict[select.id] = selected.value
-    } else {
-      if (element.checked){
-        dict["/vout/ch_full             ="] = element.value
+    if (element.checked){
+      if (element.id === "one_ch"){
+        const select = document.getElementById("/vout/ch_full             =")
+        const selected = select.options[select.selectedIndex]
+        dict[select.id] = selected.value
+      } else {
+       dict["/vout/ch_mode             ="] = element.value
       }
     }
   });
 }
+
+// function getValFromVout(dict){
+//   const radios = document.getElementsByName("v_out")
+//   radios.forEach(element => {
+//     if (element.id === "one_ch" && element.checked){
+//       const select = document.getElementById("/vout/ch_full             =")
+//       const selected = select.options[select.selectedIndex]
+//       dict[select.id] = selected.value
+//     } else {
+//       if (element.checked){
+//         dict["/vout/ch_full             ="] = element.value
+//       }
+//     }
+//   });
+// }
 
 
 // CALLBACK - convert a dictionary in json format to array of strings, then returned as a string joined with ' ' instead of ','
@@ -853,7 +868,6 @@ async function populateDicts(){
   getValFromNumField("saver_number", screensaver, "saver_toggle")
   getValFromNumField("shutdown_number", shutdown, "shutdown_toggle", true)
   getValFromVout(vout)
-
   
 }
 

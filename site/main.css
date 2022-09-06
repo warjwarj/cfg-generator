@@ -1,11 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&display=swap');
 
 body {
-    text-align: center;
-    margin-right: 30em;
-    margin-left: 30em;
-    padding: 2em;
+
     font-family: 'Lato', sans-serif;
+}
+
+div {
+  text-align: center;
+  margin-right: 24%;
+  margin-left: 24%;
+  padding: 2em;
 }
 
 /* override unattractive aspects of bootstrap classes */
@@ -19,6 +23,13 @@ body {
   display: inline !important;
   width: 35% !important;
   margin: .5em;
+}
+
+/*  wide div  */
+
+#alm_wide{
+  margin-left: 5% !important;
+  margin-right: 5% !important
 }
 
 /* text inbetween input alm names and select field */
